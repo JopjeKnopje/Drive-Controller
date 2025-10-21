@@ -32,3 +32,7 @@ pio run build
 pio run -t compiledb
 ```
 
+
+## Resources
+- [SimpleFOCMini - example](https://docs.simplefoc.com/mini_example)
+- [Arduino-FOC github](https://github.com/simplefoc/Arduino-FOC/tree/master)
