@@ -7,7 +7,6 @@ Drop in PCB to control the BLDC motor of a Seagate HDD.
 </div>
 
 
----
 
 # Motivation
 I want to make a grid of spinning harddrives, so this board will be housing a DRV8313 with some microcontroller. The board will be addressable allowing you to "stack" the harddrives and control them individually.
