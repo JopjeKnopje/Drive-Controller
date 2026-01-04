@@ -1,18 +1,3 @@
-/* Sensorless brushless DC (BLDC) motor control with Arduino UNO (Arduino DIY ESC).
- * This is a free software with NO WARRANTY.
- * https://simple-circuit.com/
- */
-
-
-/*
- * 
- *
- *
- *
- *
- */
-
-
 #include <Arduino.h>
 
 #define SPEED_UP          A0
@@ -99,7 +84,7 @@ void CH_BL(){
 	TCCR1A =  0x81;         //
 }
 
-void SET_PWM_DUTY(byte duty){
+void set_pwm_duty(byte duty){
 	if(duty < PWM_MIN_DUTY)
 		duty  = PWM_MIN_DUTY;
 	if(duty > PWM_MAX_DUTY)
@@ -179,11 +164,11 @@ ISR (ANALOG_COMP_vect) {
 }
 
 void loop() {
-	SET_PWM_DUTY(PWM_START_DUTY);    // Setup starting PWM with duty cycle = PWM_START_DUTY
+	set_pwm_duty(PWM_START_DUTY);    // Setup starting PWM with duty cycle = PWM_START_DUTY
 	i = 5000;
 	// Motor start
 	while(i > 100) {
-		delayMicroseconds(i);
+		delayMicroseconds(100);
 		bldc_move();
 		bldc_step++;
 		bldc_step %= 6;
@@ -194,12 +179,12 @@ void loop() {
 	while(1) {
 		while(!(digitalRead(SPEED_UP)) && motor_speed < PWM_MAX_DUTY){
 			motor_speed++;
-			SET_PWM_DUTY(motor_speed);
+			set_pwm_duty(motor_speed);
 			delay(100);
 		}
 		while(!(digitalRead(SPEED_DOWN)) && motor_speed > PWM_MIN_DUTY){
 			motor_speed--;
-			SET_PWM_DUTY(motor_speed);
+			set_pwm_duty(motor_speed);
 			delay(100);
 		}
 	}
