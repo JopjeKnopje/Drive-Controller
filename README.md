@@ -31,15 +31,17 @@ I downloaded `v19.1.7` from [github](https://github.com/tqfx/clang-format/releas
 
 # Building
 
-## compiling the firmware
+## Flashing
+Flashing the Uno
 ```
-pio run build
+pio run -e uno -t upload
 ```
 
 ## compile_commands.json
 ```
-pio run -t compiledb
+pio run -e uno -t compiledb
 ```
+
 
 
 ## Resources
