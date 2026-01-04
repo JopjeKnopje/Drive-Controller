@@ -17,10 +17,19 @@ I'm currently trying to understand the driver code and design my own board aroun
 
 
 
+# Toolchain setup
+## PlatformIO
+This project is build using PlatformIO, download it from here [platformio.org](https://platformio.org/)
 
+## pre-commit
+```sh
+pip install pre-commit
+```
+## Clang-format
+You will probably already have this install if have clang installed.
+I downloaded `v19.1.7` from [github](https://github.com/tqfx/clang-format/releases/tag/microsoft%2Fv19.1.7) and installed it in `~/.local/bin`.
 
 # Building
-This project in built using [PlatformIO](https://platformio.org/) so install it.
 
 ## compiling the firmware
 ```
