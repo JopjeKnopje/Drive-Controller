@@ -1,32 +1,77 @@
-/*
- * Blink
- * Turns on an LED on for one second,
- * then off for one second, repeatedly.
- */
-
 #include <Arduino.h>
 
-#ifndef LED_BUILTIN
-  #define LED_BUILTIN PC13
-#endif
+const int phase1pin = 9;
+const int phase2pin = 10;
+const int phase3pin = 11;
+float holdTime = 50000; // microsecs
+const unsigned long minHoldTime = 1300;
 
-void setup()
-{
-  // initialize LED digital pin as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
-	Serial.begin(115200);
+unsigned long p1start,
+              p1end,
+              p2start,
+              p2end,
+              p3start,
+              p3end;
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(phase1pin, OUTPUT);
+  pinMode(phase2pin, OUTPUT);
+  pinMode(phase3pin, OUTPUT);
+  p1start = micros();
+  digitalWrite(phase1pin, HIGH);
 }
 
-void loop()
-{
-  // turn the LED on (HIGH is the voltage level)
-  digitalWrite(LED_BUILTIN, HIGH);
-  // wait for a second
-	Serial.println("HIGH");
-  delay(1000);
-  // turn the LED off by making the voltage LOW
-  digitalWrite(LED_BUILTIN, LOW);
-	Serial.println("LOW");
-   // wait for a second
-  delay(1000);
+
+void chkP1(){
+  unsigned long currentTime = micros();
+  unsigned long td = currentTime - p1start;
+  unsigned long refractory = 2.25*holdTime;
+  if(digitalRead(phase1pin)){
+    if(td > holdTime){
+      digitalWrite(phase1pin, LOW);
+      p1end = currentTime;
+    }
+  }else if(td > refractory){
+    digitalWrite(phase1pin, HIGH);
+    p1start = currentTime;
+  }
+}
+
+void chkP2(){
+  unsigned long currentTime = micros();
+  unsigned long td = currentTime - p1start;
+  if(digitalRead(phase2pin)){
+    if(td > 1.75*holdTime || td < 0.75*holdTime){
+      digitalWrite(phase2pin, LOW);
+      p2end = currentTime;
+    }
+  }else if(td > 0.75*holdTime && td < 1.75*holdTime){
+    digitalWrite(phase2pin, HIGH);
+    p2start = currentTime;
+  }
+}
+
+void chkP3(){
+  unsigned long currentTime = micros();
+  unsigned long td = currentTime - p1start;
+  if(digitalRead(phase3pin)){
+    if(td > 0.25*holdTime && p3start < p1start){
+      digitalWrite(phase3pin, LOW);
+      p3end = currentTime;
+    }
+  }else if(td > 1.5*holdTime){
+    digitalWrite(phase3pin, HIGH);
+    p3start = currentTime;
+  }
+}
+
+void loop(){
+  chkP1();
+  chkP2();
+  chkP3();
+  delayMicroseconds(100);
+  if(holdTime >= minHoldTime){
+    holdTime -= 1.0;
+  }
 }
