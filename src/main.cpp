@@ -96,10 +96,7 @@ void c_high_b_low()
 
 void set_pwm_duty(byte duty)
 {
-    if (duty < PWM_MIN_DUTY)
-        duty = PWM_MIN_DUTY;
-    if (duty > PWM_MAX_DUTY)
-        duty = PWM_MAX_DUTY;
+    duty = constrain(duty, PWM_MIN_DUTY, PWM_MAX_DUTY);
     OCR1A = duty; // Set pin 9  PWM duty cycle
     OCR1B = duty; // Set pin 10 PWM duty cycle
     OCR2A = duty; // Set pin 11 PWM duty cycle
