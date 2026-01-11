@@ -6,38 +6,38 @@
 #define PWM_MIN_DUTY   50
 #define PWM_START_DUTY 100
 
-void BEMF_A_RISING()
+void bemf_a_rising()
 {
     ADCSRB = (0 << ACME); // Select AIN1 as comparator negative input
     ACSR |= 0x03;         // Set interrupt on rising edge
 }
-void BEMF_A_FALLING()
+void bemf_a_falling()
 {
     ADCSRB = (0 << ACME); // Select AIN1 as comparator negative input
     ACSR &= ~0x01;        // Set interrupt on falling edge
 }
-void BEMF_B_RISING()
+void bemf_b_rising()
 {
     ADCSRA = (0 << ADEN); // Disable the ADC module
     ADCSRB = (1 << ACME);
     ADMUX = 2; // Select analog channel 2 as comparator negative input
     ACSR |= 0x03;
 }
-void BEMF_B_FALLING()
+void bemf_b_falling()
 {
     ADCSRA = (0 << ADEN); // Disable the ADC module
     ADCSRB = (1 << ACME);
     ADMUX = 2; // Select analog channel 2 as comparator negative input
     ACSR &= ~0x01;
 }
-void BEMF_C_RISING()
+void bemf_c_rising()
 {
     ADCSRA = (0 << ADEN); // Disable the ADC module
     ADCSRB = (1 << ACME);
     ADMUX = 3; // Select analog channel 3 as comparator negative input
     ACSR |= 0x03;
 }
-void BEMF_C_FALLING()
+void bemf_c_falling()
 {
     ADCSRA = (0 << ADEN); // Disable the ADC module
     ADCSRB = (1 << ACME);
@@ -45,7 +45,7 @@ void BEMF_C_FALLING()
     ACSR &= ~0x01;
 }
 
-void AH_BL()
+void a_high_b_low()
 {
     PORTB = 0x04;
     PORTD &= ~0x18;
@@ -53,7 +53,7 @@ void AH_BL()
     TCCR1A = 0;    // Turn pin 11 (OC2A) PWM ON (pin 9 & pin 10 OFF)
     TCCR2A = 0x81; //
 }
-void AH_CL()
+void a_high_c_low()
 {
     PORTB = 0x02;
     PORTD &= ~0x18;
@@ -61,7 +61,7 @@ void AH_CL()
     TCCR1A = 0;    // Turn pin 11 (OC2A) PWM ON (pin 9 & pin 10 OFF)
     TCCR2A = 0x81; //
 }
-void BH_CL()
+void b_high_c_low()
 {
     PORTB = 0x02;
     PORTD &= ~0x28;
@@ -69,7 +69,7 @@ void BH_CL()
     TCCR2A = 0;    // Turn pin 10 (OC1B) PWM ON (pin 9 & pin 11 OFF)
     TCCR1A = 0x21; //
 }
-void BH_AL()
+void b_high_a_low()
 {
     PORTB = 0x08;
     PORTD &= ~0x28;
@@ -77,7 +77,7 @@ void BH_AL()
     TCCR2A = 0;    // Turn pin 10 (OC1B) PWM ON (pin 9 & pin 11 OFF)
     TCCR1A = 0x21; //
 }
-void CH_AL()
+void c_high_a_low()
 {
     PORTB = 0x08;
     PORTD &= ~0x30;
@@ -85,7 +85,7 @@ void CH_AL()
     TCCR2A = 0;    // Turn pin 9 (OC1A) PWM ON (pin 10 & pin 11 OFF)
     TCCR1A = 0x81; //
 }
-void CH_BL()
+void c_high_b_low()
 {
     PORTB = 0x04;
     PORTD &= ~0x30;
@@ -113,28 +113,28 @@ void bldc_move()
     switch (bldc_step)
     {
     case 0:
-        AH_BL();
-        BEMF_C_RISING();
+        a_high_b_low();
+        bemf_c_rising();
         break;
     case 1:
-        AH_CL();
-        BEMF_B_FALLING();
+        a_high_c_low();
+        bemf_b_falling();
         break;
     case 2:
-        BH_CL();
-        BEMF_A_RISING();
+        b_high_c_low();
+        bemf_a_rising();
         break;
     case 3:
-        BH_AL();
-        BEMF_C_FALLING();
+        b_high_a_low();
+        bemf_c_falling();
         break;
     case 4:
-        CH_AL();
-        BEMF_B_RISING();
+        c_high_a_low();
+        bemf_b_rising();
         break;
     case 5:
-        CH_BL();
-        BEMF_A_FALLING();
+        c_high_b_low();
+        bemf_a_falling();
         break;
     }
 }
