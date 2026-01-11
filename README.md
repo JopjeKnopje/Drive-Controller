@@ -33,6 +33,11 @@ pio run -t compiledb
 ```
 
 
+# Hardware
+## Schematic
+[Schematic](https://simple-circuit.com/wp-content/uploads/2018/01/arduino-sensorless-brushless-dc-motor-control-diy-esc.png)
+
 ## Resources
+- [Code stolen from](https://simple-circuit.com/arduino-sensorless-bldc-motor-controller-esc/)
 - [SimpleFOCMini - example](https://docs.simplefoc.com/mini_example)
 - [Arduino-FOC github](https://github.com/simplefoc/Arduino-FOC/tree/master)
