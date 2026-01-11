@@ -11,11 +11,13 @@ void bemf_a_rising()
     ADCSRB = (0 << ACME); // Select AIN1 as comparator negative input
     ACSR |= 0x03;         // Set interrupt on rising edge
 }
+
 void bemf_a_falling()
 {
     ADCSRB = (0 << ACME); // Select AIN1 as comparator negative input
     ACSR &= ~0x01;        // Set interrupt on falling edge
 }
+
 void bemf_b_rising()
 {
     ADCSRA = (0 << ADEN); // Disable the ADC module
@@ -23,6 +25,7 @@ void bemf_b_rising()
     ADMUX = 2; // Select analog channel 2 as comparator negative input
     ACSR |= 0x03;
 }
+
 void bemf_b_falling()
 {
     ADCSRA = (0 << ADEN); // Disable the ADC module
@@ -30,6 +33,7 @@ void bemf_b_falling()
     ADMUX = 2; // Select analog channel 2 as comparator negative input
     ACSR &= ~0x01;
 }
+
 void bemf_c_rising()
 {
     ADCSRA = (0 << ADEN); // Disable the ADC module
@@ -37,6 +41,7 @@ void bemf_c_rising()
     ADMUX = 3; // Select analog channel 3 as comparator negative input
     ACSR |= 0x03;
 }
+
 void bemf_c_falling()
 {
     ADCSRA = (0 << ADEN); // Disable the ADC module
@@ -53,6 +58,7 @@ void a_high_b_low()
     TCCR1A = 0;    // Turn pin 11 (OC2A) PWM ON (pin 9 & pin 10 OFF)
     TCCR2A = 0x81; //
 }
+
 void a_high_c_low()
 {
     PORTB = 0x02;
@@ -61,6 +67,7 @@ void a_high_c_low()
     TCCR1A = 0;    // Turn pin 11 (OC2A) PWM ON (pin 9 & pin 10 OFF)
     TCCR2A = 0x81; //
 }
+
 void b_high_c_low()
 {
     PORTB = 0x02;
@@ -69,6 +76,7 @@ void b_high_c_low()
     TCCR2A = 0;    // Turn pin 10 (OC1B) PWM ON (pin 9 & pin 11 OFF)
     TCCR1A = 0x21; //
 }
+
 void b_high_a_low()
 {
     PORTB = 0x08;
@@ -77,6 +85,7 @@ void b_high_a_low()
     TCCR2A = 0;    // Turn pin 10 (OC1B) PWM ON (pin 9 & pin 11 OFF)
     TCCR1A = 0x21; //
 }
+
 void c_high_a_low()
 {
     PORTB = 0x08;
@@ -85,6 +94,7 @@ void c_high_a_low()
     TCCR2A = 0;    // Turn pin 9 (OC1A) PWM ON (pin 10 & pin 11 OFF)
     TCCR1A = 0x81; //
 }
+
 void c_high_b_low()
 {
     PORTB = 0x04;

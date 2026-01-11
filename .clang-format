@@ -22,3 +22,4 @@ BraceWrapping:
   BeforeWhile: true
 IndentWidth: 4
 ColumnLimit: 100
+SeparateDefinitionBlocks: Always
