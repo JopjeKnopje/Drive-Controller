@@ -1,3 +1,4 @@
+# https://clang-format-configurator.site/
 ---
 AlignConsecutiveMacros:
   Enabled: true
@@ -20,3 +21,4 @@ BraceWrapping:
   BeforeElse: true
   BeforeWhile: true
 IndentWidth: 4
+ColumnLimit: 100
