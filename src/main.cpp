@@ -102,11 +102,11 @@ void set_pwm_duty(byte duty)
     OCR2A = duty; // Set pin 11 PWM duty cycle
 }
 
-byte bldc_step = 0, motor_speed;
+uint8_t bldc_step = 0, motor_speed;
 unsigned int i;
 
 void bldc_move()
-{ // BLDC motor commutation function
+{
     switch (bldc_step)
     {
     case 0:
@@ -142,6 +142,7 @@ void setup()
     DDRD |= 0x38; // Configure pins 3, 4 and 5 as outputs
     PORTD = 0x00;
     // `HIN` on the IR2021
+    // TODO: Get rid of `HIN` side.
     DDRB |= 0x0E; // Configure pins 9, 10 and 11 as outputs
     PORTB = 0x31;
     // Timer1 module setting: set clock source to clkI/O / 1 (no prescaling)
@@ -152,6 +153,7 @@ void setup()
     TCCR2B = 0x01;
     // Analog comparator setting
     ACSR = 0x10; // Disable and clear (flag bit) analog comparator interrupt
+
     pinMode(SPEED_UP, INPUT_PULLUP);
     pinMode(SPEED_DOWN, INPUT_PULLUP);
 }
@@ -162,8 +164,11 @@ ISR(ANALOG_COMP_vect)
     // BEMF debounce
     for (i = 0; i < 10; i++)
     {
+        // Check if the bit:0 is set
+        // essentially we check if bldc_step is either 1, 3 or 5
         if (bldc_step & 1)
         {
+            // read the `ACO` bit, which is the ouput of the comparator
             if (!(ACSR & 0x20))
                 i -= 1; // 0b00100000
         }
@@ -180,8 +185,9 @@ ISR(ANALOG_COMP_vect)
 
 void loop()
 {
-    set_pwm_duty(PWM_START_DUTY); // Setup starting PWM with duty cycle = PWM_START_DUTY
+    set_pwm_duty(PWM_START_DUTY);
     i = 5000;
+    Serial.begin(115200);
     // Motor start
     while (i > 100)
     {
@@ -189,7 +195,9 @@ void loop()
         bldc_move();
         bldc_step++;
         bldc_step %= 6;
+        // Not sure about this `- 20` stuff
         i = i - 20;
+        Serial.println(i);
     }
     motor_speed = PWM_START_DUTY;
     ACSR |= 0x08; // Enable analog comparator interrupt
