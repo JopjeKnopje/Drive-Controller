@@ -24,12 +24,19 @@ This project in built using [PlatformIO](https://platformio.org/) so install it.
 
 ## compiling the firmware
 ```
-pio run build
+pio run -e uno
 ```
+
+
+## uploading
+```
+pio run -e uno -t upload
+```
+
 
 ## compile_commands.json
 ```
-pio run -t compiledb
+pio run -t compiledb -e uno
 ```
 
 
